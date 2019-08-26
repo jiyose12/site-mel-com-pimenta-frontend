@@ -15,11 +15,11 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: 'Nuxt CoreUI',
+    title: 'Mel com Pimenta',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'Unofficial Nuxt + CoreUI project, free to use boilerplate for every need.' }
+      { hid: 'description', name: 'description', content: 'Site Mel com Pimenta.' }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
@@ -42,6 +42,7 @@ module.exports = {
    * Import CSS
    */
   css: [
+    '@/assets/css/main.scss',
     /* Import Font Awesome Icons Set */
     '~/node_modules/flag-icon-css/css/flag-icon.min.css',
     /* Import Font Awesome Icons Set */
@@ -58,6 +59,8 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    '~/plugins/custom-components.js',
+    '~/plugins/vuelidate.js',
     { src: '~/plugins/vue-tags-input', ssr: false }
   ],
 
@@ -75,6 +78,7 @@ module.exports = {
   */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
+    baseURL:"http://localhost:8000/api/"
   },
 
   /*
@@ -98,7 +102,10 @@ module.exports = {
           enforce: 'pre',
           test: /\.(js|vue)$/,
           loader: 'eslint-loader',
-          exclude: /(node_modules)/
+          exclude: /(node_modules)/,
+          options: {
+            fix: true
+          }
         })
 
         const vueLoader = config.module.rules.find(

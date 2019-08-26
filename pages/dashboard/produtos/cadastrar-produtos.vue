@@ -1,167 +1,207 @@
 <template>
-        <b-card>
-          <div slot="header">
-            <strong>Cadastro</strong> de Produtos
-          </div>
+  <b-card>
+    <nuxt ref="page"/>
+    <custom-loading v-if="loading"></custom-loading>
+    <div slot="header">
+      <strong>Cadastro</strong> de Produtos
+    </div>
+    <b-form-group
+      id="fieldset-1"
+      label="Nome do Produto"
+      label-for="input-name"
+      :state="$v.name.$dirty ? !$v.name.$error : null"
+    >
+      <b-form-input aria-describedby="input-name-live-feedback" required size='lg' id="input-name" v-model="$v.name.$model" :state="$v.name.$dirty ? !$v.name.$error : null" trim></b-form-input>
+      <b-form-invalid-feedback id="input-name-live-feedback">
+        Este campo é obrigatório e com no mínimo 3 letras.
+      </b-form-invalid-feedback>
+    </b-form-group>
 
-          <b-form-group
-            id="fieldset-1"
-            label="Nome do Produto"
-            label-for="input-1"
-            :invalid-feedback="invalidFeedback"
-            :valid-feedback="validFeedback"
-            :state="state"
-          >
-            <b-form-input required size='lg' id="input-1" v-model="name" :state="state" trim></b-form-input>
-          </b-form-group>
+    <b-row>
+      <b-col>
+        <b-form-group
+        label-for="category"
+        label="Selecione a Categoria"
+        >
+          <b-form-select
+          :state="$v.categorySelected.$dirty ? !$v.categorySelected.$error : null"
+          @change.native="fetchSubcategoryOptions($event)"
+          id="category"
+          size='lg'
+          v-model="$v.categorySelected.$model"
+          :options="categoryOptions">
+          </b-form-select>
+          <b-form-invalid-feedback>
+            Este campo é obrigatório
+          </b-form-invalid-feedback>
+        </b-form-group>
+      </b-col>
+      <b-col>
+        <b-form-group
+        label-for="subcategory"
+        label="Selecione a Subcategoria"
+        >
+          <b-form-select
+          :state="$v.subcategorySelected.$dirty ? !$v.subcategorySelected.$error : null"
+          id="subcategory"
+          size='lg'
+          v-model="$v.subcategorySelected.$model"
+          :options="subcategoryOptions">
+          </b-form-select>
+          <b-form-invalid-feedback>
+            Este campo é obrigatório
+          </b-form-invalid-feedback>
+        </b-form-group>
+      </b-col>
+    </b-row>
 
-          <b-row>
-            <b-col>
-              <b-form-group
-              label-for="category"
-              label="Selecione a Categoria"
-              >
-                <b-form-select @change.native="fetchSubcategoryOptions($event)" id="category" size='lg' v-model="categorySelected" :options="categoryOptions"></b-form-select>
-              </b-form-group>
-            </b-col>
-            <b-col>
-              <b-form-group
-              label-for="subcategory"
-              label="Selecione a Subcategoria"
-              >
-                <b-form-select id="subcategory" size='lg' v-model="subcategorySelected" :options="subcategoryOptions"></b-form-select>
-              </b-form-group>
-            </b-col>
-          </b-row>
+    <b-row>
+      <b-col>
+        <b-form-group
+        label-for="amount"
+        label="Informe a Quantidade"
+        description="Quantidade em estoque."
+        >
+          <b-form-input
+          :state="$v.amount.$dirty ? !$v.amount.$error : null"
+          id="amount" size='lg'
+          type="number"
+          v-model="$v.amount.$model"
+          placeholder="Quantidade">
+          </b-form-input>
+          <b-form-invalid-feedback>
+            Este campo é obrigatório
+          </b-form-invalid-feedback>
+        </b-form-group>
+      </b-col>
+      <b-col>
+        <b-form-group
+        label-for="gross-price"
+        label="Informe o Preço Bruto"
+        description="Preço bruto do produto."
+        >
+          <b-form-input :state="$v.grossprice.$dirty ? !$v.grossprice.$error : null"
+          id="gross-price"
+          size='lg'
+          type="number"
+          v-model="$v.grossprice.$model"
+          placeholder="Preço Bruto">
+          </b-form-input>
+          <b-form-invalid-feedback>
+            Este campo é obrigatório
+          </b-form-invalid-feedback>
+        </b-form-group>
+      </b-col>
+      <b-col>
+        <b-form-group
+        label-for="discount"
+        label="Informe o Desconto"
+        description="Caso haja desconto, gerará automaticamente o preço líquido do produto."
+        >
+          <b-form-input id="discount" size='lg' type="number" v-model="discount" placeholder="Desconto"></b-form-input>
+        </b-form-group>
+      </b-col>
+    </b-row>
 
+    <b-form-group
+    v-if="this.categorySelected == 'Moda Íntima'"
+    label-for="checkbox-group-1"
+    label="Informe os Tamanhos"
+    >
+      <b-form-checkbox-group
+        id="checkbox-group-1"
+        v-model="sizeSelected"
+        :options="sizeOptions"
+        name="size"
+      ></b-form-checkbox-group>
+      <div class="mt-3">Selecionados: <strong>{{ sizeSelected }}</strong></div>
+    </b-form-group>
 
-          <b-row>
-            <b-col>
-              <b-form-group
-              label-for="gross-price"
-              label="Informe o Preço Bruto"
-              description="Preço bruto do produto."
-              >
-                <b-form-input id="gross-price" size='lg' type="number" v-model="grossprice" placeholder="Preço Bruto"></b-form-input>
-              </b-form-group>
-            </b-col>
-            <b-col>
-              <b-form-group
-              label-for="discount"
-              label="Informe o Desconto"
-              description="Caso haja desconto, gerará automaticamente o preço líquido do produto."
-              >
-                <b-form-input id="discount" size='lg' type="number" v-model="discount" placeholder="Desconto"></b-form-input>
-              </b-form-group>
-            </b-col>
-          </b-row>
+    <b-form-group
+    v-if="this.categorySelected == 'Sex Shop'"
+    label-for="checkbox-group-2"
+    label="Informe os Sabores"
+    >
+      <b-form-checkbox-group
+        id="checkbox-group-2"
+        v-model="flavorSelected"
+        :options="flavorOptions"
+        name="flavor"
+      ></b-form-checkbox-group>
+      <div class="mt-3">Selecionados: <strong>{{ flavorSelected }}</strong></div>
+    </b-form-group>
 
+    <b-form-group
+    v-if="this.categorySelected == 'Moda Íntima'"
+    label-for="color"
+    label="Informe as Cores"
+    >
+      <no-ssr>
+        <vue-tags-input
+          id="color"
+          v-model="color"
+          :tags="colors"
+          @tags-changed="newTags => colors = newTags"
+        />
+      </no-ssr>
+      <div class="mt-3">Cores: <strong>{{ colors }}</strong></div>
+    </b-form-group>
 
-          <b-form-group
-          v-if="this.categorySelected == 'Moda Íntima'"
-          label-for="checkbox-group-1"
-          label="Informe os Tamanhos"
-          >
-            <b-form-checkbox-group
-              id="checkbox-group-1"
-              v-model="sizeSelected"
-              :options="sizeOptions"
-              name="size"
-            ></b-form-checkbox-group>
-            <div class="mt-3">Selecionados: <strong>{{ sizeSelected }}</strong></div>
-          </b-form-group>
+    <b-form-group
+    label-for="textarea"
+    label="Descrição do Produto"
+    >
+      <b-form-textarea
+        :state="$v.text.$dirty ? !$v.text.$error : null"
+        size='lg'
+        id="textarea"
+        v-model="$v.text.$model"
+        placeholder="Descrição..."
+        rows="3"
+        max-rows="6"
+      ></b-form-textarea>
+      <b-form-invalid-feedback>
+        Este campo é obrigatório
+      </b-form-invalid-feedback>
+    </b-form-group>
 
-          <b-form-group
-          v-if="this.categorySelected == 'Sex Shop'"
-          label-for="checkbox-group-2"
-          label="Informe os Sabores"
-          >
-            <b-form-checkbox-group
-              id="checkbox-group-2"
-              v-model="flavorSelected"
-              :options="flavorOptions"
-              name="flavor"
-            ></b-form-checkbox-group>
-            <div class="mt-3">Selecionados: <strong>{{ flavorSelected }}</strong></div>
-          </b-form-group>
+    <b-form-group>
+      <b-form-file
+      size='lg'
+      v-model="file"
+      :state="Boolean(file)"
+      placeholder="Escolha o Arquivo ou Arraste-o até Aqui"
+      drop-placeholder="Arraste o arquivo até Aqui..."
+      @change.native="onFileSelected($event)"
+      ></b-form-file>
+    </b-form-group>
 
-          <b-form-group
-          v-if="this.categorySelected == 'Moda Íntima'"
-          label-for="color"
-          label="Informe as Cores"
-          >
-            <no-ssr>
-              <vue-tags-input
-                id="color"
-                v-model="color"
-                :tags="colors"
-                @tags-changed="newTags => colors = newTags"
-              />
-            </no-ssr>
-            <div class="mt-3">Cores: <strong>{{ colors }}</strong></div>
-          </b-form-group>
-
-
-          <b-form-group
-          label-for="textarea"
-          label="Descrição do Produto"
-          >
-            <b-form-textarea
-              size='lg'
-              id="textarea"
-              v-model="text"
-              placeholder="Descrição..."
-              rows="3"
-              max-rows="6"
-            ></b-form-textarea>
-          </b-form-group>
-
-          <b-form-group>
-             <b-form-file
-              size='lg'
-              v-model="file"
-              :state="Boolean(file)"
-              placeholder="Choose a file or drop it here..."
-              drop-placeholder="Drop file here..."
-              ></b-form-file>
-          </b-form-group>
-
-          <div slot="footer">
-            <b-button type="submit" size="lg" variant="primary"><i class="fa fa-dot-circle-o"></i> Submit</b-button>
-            <b-button type="reset" size="md" variant="danger"><i class="fa fa-ban"></i> Reset</b-button>
-          </div>
-        </b-card>
+    <div slot="footer">
+      <b-button @click="store" type="submit" size="lg" variant="primary"><i class="fa fa-dot-circle-o"></i> Submeter</b-button>
+      <b-button @click="resetFields" type="reset" size="md" variant="danger"><i class="fa fa-ban"></i> Resetar</b-button>
+    </div>
+  </b-card>
 </template>
 
 <script>
+  import { required, minLength } from 'vuelidate/lib/validators'
   export default {
     computed: {
-      state() {
-        return this.name.length >= 2 ? true : false
-      },
-      invalidFeedback() {
-        if (this.name.length > 1) {
-          return ''
-        } else if (this.name.length > 0) {
-          return 'Precisa ter mais que 1 caractere'
-        } else {
-          return 'Obrigatório digitar o nome'
-        }
-      },
-      validFeedback() {
-        return this.state === true ? 'Ok' : ''
-      }
+
     },
     data() {
       return {
+        error: false,
+        loading: false,
         color: '',
         colors: [],
+        colorsSelected: [],
         name: '',
+        amount: null,
         grossprice: null,
         discount: null,
         file: null,
         text: '',
-        size: 3,
         categorySelected: null,
         categoryOptions: [
           { value: null, text: 'Selecione uma opção de Categoria' },
@@ -201,6 +241,16 @@
         ]
       }
     },
+    validations: {
+      name: { required, minLength: minLength(3) },
+      amount: { required },
+      grossprice: { required },
+      file: { required },
+      text: { required },
+      categorySelected: { required },
+      subcategorySelected: { required }
+      // rules object
+    },
     methods: {
       fetchSubcategoryOptions(event){
         if(event.target.value == 'Moda Íntima'){
@@ -226,7 +276,115 @@
         }
         else
            this.subcategoryOptions = []
+      },
+      onFileSelected(event) {
+        this.file = event.target.files[0];
+        console.log(this.file)
+      },
+      async store () {
+        if(!this.$v.$invalid){
+          if (this.loading) {
+            return false
+          }
+          this.loading = true
+
+          for (const color of this.colors) {
+            this.colorsSelected.push(color.text)
+          }
+          const fd = new FormData();
+          fd.append('image_product', this.file, this.file.name)
+          fd.append('name', this.name)
+          fd.append('gross_price', this.grossprice)
+          fd.append('discount', this.discount)
+          fd.append('amount', this.amount)
+          fd.append('description', this.text)
+          fd.append('color', this.colorsSelected.sort().join())
+          fd.append('size', this.sizeSelected.sort().join())
+          fd.append('flavor', this.flavorSelected.sort().join())
+          fd.append('category', this.categorySelected)
+          fd.append('subcategory', this.subcategorySelected)
+
+          try {
+            const { data } = await this.$axios.post('/product',
+              fd,
+              // {
+              //   name: this.name,
+              //   gross_price: this.grossprice,
+              //   discount: this.discount,
+              //   amount: this.amount,
+              //   fd,
+              //   description: this.text,
+              //   color: this.colorsSelected.sort().join(),
+              //   size: this.sizeSelected.sort().join(),
+              //   flavor: this.flavorSelected.sort().join(),
+              //   category: this.categorySelected,
+              //   subcategory: this.subcategorySelected
+              // },
+              {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+            })
+          } catch (e) {
+            this.error = e.response.data
+          }
+          // setTimeout(function(){ this.loading = false }, 3000);
+          this.loading = false
+          // this.resetFields();
+          // this.$router.push('/dashboard/produtos/cadastrar-produtos')
+          // this.window.reload()
+          document.location.reload(true);
+        }
+        else {
+          this.$v.$touch()
+        }
+      },
+      resetFields() {
+        this.name = ''
+        this.color = ''
+        this.colors = []
+        this.colorsSelected = []
+        this.amount = null
+        this.grossprice = null
+        this.discount = null
+        this.file = null
+        this.text = ''
+        this.categorySelected = null
+        this.subcategorySelected = null
+        this.sizeSelected = []
+        this.flavorSelected = []
       }
     }
   };
+  // sendImages = async (response: Object): any => {
+  //   try {
+  //     const { fotos } = this.state
+  //     const { id } = response
+  //     const form = new FormData()
+
+  //     fotos.forEach((value, index) => {
+  //       form.append('arquivo[]', {
+  //         uri: value.uri,
+  //         type: 'image/jpeg',
+  //         name: `image${index + 1}`
+  //       })
+  //     })
+
+  //     const responseImages = await fetch(
+  //       `http://dev.gddoc.com.br/maps_sj/gravaimg/${UPLOAD_ACCESS_KEY}/${id}`, {
+  //         method: 'POST',
+  //         body: form,
+  //         headers: {
+  //           'Content-Type': 'multipart/form-data'
+  //         }
+  //       }
+  //     )
+  //     await responseImages.json()
+  //     if (!responseImages.ok) this.setState({ fetch: false })
+  //     this.setState({ fetch: false })
+  //     return true
+  //   } catch (error) {
+  //     return this.setState({ error: 'Não possível enviar as imagens', fetch: false })
+  //   }
+  // }
 </script>
