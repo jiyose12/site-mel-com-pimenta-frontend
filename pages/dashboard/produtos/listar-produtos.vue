@@ -1,5 +1,6 @@
 <template>
   <b-card>
+    <custom-loading v-if="responseState.isLoading"></custom-loading>
     <div slot="header">
       <strong>Listagem</strong> de Produtos
 
@@ -50,13 +51,23 @@
 </template>
 
 <script>
+import { removeSpecialChar } from "../../../plugins/helpers";
 
 export default {
   computed: {
     items () {
 			return this.keyword
-        ? this.productData.filter(item => item.gross_price.includes(this.keyword)
-        || item.name.includes(this.keyword)
+        ? this.productData.filter(item => {
+
+          let newItem = removeSpecialChar(item.name.toLowerCase())
+          let newKeyword = removeSpecialChar(this.keyword.toLowerCase())
+
+          if(newItem.indexOf(newKeyword) !== -1){
+            return item.name
+          }
+          else
+            return item.gross_price.includes(this.keyword)
+        }
         // || item.color !== null || item.color.includes(this.keyword)
         // || item.flavor ? item.flavor.includes(this.keyword) : item.flavor == ' '
         // || item.size.includes(this.keyword)
@@ -111,23 +122,60 @@ export default {
   },
   data() {
     return {
-        productData: null,
-        keyword: ''
+      responseState: {
+        message: '',
+        error: '',
+        isLoading: false
+      },
+      productData: null,
+      keyword: ''
     }
   },
   methods: {
     async index () {
       try {
         const { data } = await this.$axios.get('/product')
+        //color.substring(0,8)
+
         this.productData = data
         console.dir(this.productData)
-        console.dir(this.items)
       } catch (e) {
         this.error = e.response.data
       }
     },
-    onAction (action, data) {
-      console.log('slot) action: ' + action, typeof data.color)
+    async onAction (action, data) {
+      this.responseState.isLoading = true
+      console.log('slot) action: ' + action, data.name)
+      switch (action) {
+        case "view-item":
+          console.log('slot) action: ' + action, data.id)
+          break;
+        case "edit-item":
+          console.log('slot) action: ' + action, data.id)
+          break;
+        case "delete-item":
+          try {
+            const response = await this.$axios.delete(`/product/${data.id}`, {
+              // headers: {
+              //   'Authorization': `Bearer ${access_token}`,
+              //   'Content-Type': 'application/json'
+              // },
+              body: JSON.stringify([
+                data.id
+              ])
+            })
+            this.responseState.message = response.data.message
+            console.log('deletado com sucesso' + response.data.productName.name)
+            console.log(response.data.message)
+
+          } catch (e) {
+            this.responseState.error = e
+            this.responseState.isLoading = false
+          }
+          break;
+      }
+      this.responseState.isLoading = false
+      document.location.reload(true);
     }
   },
   mounted() {

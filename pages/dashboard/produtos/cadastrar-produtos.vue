@@ -1,7 +1,7 @@
 <template>
   <b-card>
     <nuxt ref="page"/>
-    <custom-loading v-if="loading"></custom-loading>
+    <custom-loading v-if="responseState.isLoading"></custom-loading>
     <div slot="header">
       <strong>Cadastro</strong> de Produtos
     </div>
@@ -191,8 +191,12 @@
     },
     data() {
       return {
-        error: false,
-        loading: false,
+        responseState: {
+          message: '',
+          error: '',
+          isLoading: false
+        },
+        responseImage: '',
         color: '',
         colors: [],
         colorsSelected: [],
@@ -283,56 +287,55 @@
       },
       async store () {
         if(!this.$v.$invalid){
-          if (this.loading) {
+          if (this.responseState.isLoading) {
             return false
           }
-          this.loading = true
+          this.responseState.isLoading = true
 
           for (const color of this.colors) {
             this.colorsSelected.push(color.text)
           }
           const fd = new FormData();
           fd.append('image_product', this.file, this.file.name)
-          fd.append('name', this.name)
-          fd.append('gross_price', this.grossprice)
-          fd.append('discount', this.discount)
-          fd.append('amount', this.amount)
-          fd.append('description', this.text)
-          fd.append('color', this.colorsSelected.sort().join())
-          fd.append('size', this.sizeSelected.sort().join())
-          fd.append('flavor', this.flavorSelected.sort().join())
-          fd.append('category', this.categorySelected)
-          fd.append('subcategory', this.subcategorySelected)
-
           try {
-            const { data } = await this.$axios.post('/product',
+            const responseImage  = await this.$axios.post('/product/saveimage',
               fd,
-              // {
-              //   name: this.name,
-              //   gross_price: this.grossprice,
-              //   discount: this.discount,
-              //   amount: this.amount,
-              //   fd,
-              //   description: this.text,
-              //   color: this.colorsSelected.sort().join(),
-              //   size: this.sizeSelected.sort().join(),
-              //   flavor: this.flavorSelected.sort().join(),
-              //   category: this.categorySelected,
-              //   subcategory: this.subcategorySelected
-              // },
               {
               headers: {
                 'Content-Type': 'multipart/form-data'
               }
             })
+
+            this.responseImage = responseImage.data.fileNameToStore
           } catch (e) {
-            this.error = e.response.data
+            this.responseState = { error: e, errorText: 'Não foi possível enviar a imagem', isLoading: false }
+            console.log(e.response.data)
+          }
+
+          try {
+            const { data } = await this.$axios.post('/product',
+              {
+                name: this.name,
+                gross_price: this.grossprice,
+                discount: this.discount,
+                amount: this.amount,
+                fileNameToStore: this.responseImage,
+                description: this.text,
+                color: this.colorsSelected.sort().join(),
+                size: this.sizeSelected.sort().join(),
+                flavor: this.flavorSelected.sort().join(),
+                category: this.categorySelected,
+                subcategory: this.subcategorySelected
+              })
+              console.dir(data)
+              this.responseState.message = data.message
+          } catch (e) {
+            this.responseState.error = e
+            this.responseState.isLoading = false
           }
           // setTimeout(function(){ this.loading = false }, 3000);
-          this.loading = false
-          // this.resetFields();
-          // this.$router.push('/dashboard/produtos/cadastrar-produtos')
-          // this.window.reload()
+          this.responseState.isLoading = false
+
           document.location.reload(true);
         }
         else {
@@ -356,35 +359,4 @@
       }
     }
   };
-  // sendImages = async (response: Object): any => {
-  //   try {
-  //     const { fotos } = this.state
-  //     const { id } = response
-  //     const form = new FormData()
-
-  //     fotos.forEach((value, index) => {
-  //       form.append('arquivo[]', {
-  //         uri: value.uri,
-  //         type: 'image/jpeg',
-  //         name: `image${index + 1}`
-  //       })
-  //     })
-
-  //     const responseImages = await fetch(
-  //       `http://dev.gddoc.com.br/maps_sj/gravaimg/${UPLOAD_ACCESS_KEY}/${id}`, {
-  //         method: 'POST',
-  //         body: form,
-  //         headers: {
-  //           'Content-Type': 'multipart/form-data'
-  //         }
-  //       }
-  //     )
-  //     await responseImages.json()
-  //     if (!responseImages.ok) this.setState({ fetch: false })
-  //     this.setState({ fetch: false })
-  //     return true
-  //   } catch (error) {
-  //     return this.setState({ error: 'Não possível enviar as imagens', fetch: false })
-  //   }
-  // }
 </script>
