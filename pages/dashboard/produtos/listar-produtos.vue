@@ -28,12 +28,15 @@
         <div slot="HEAD[]" class="text-nowrap" slot-scope="scope">{{ scope.label }}</div>
         <div slot="[]" class="text-nowrap" slot-scope="scope">{{ scope.value }}</div>
 
-        <template slot="[actions]" slot-scope="props">
-          <div class="product-actions">
+        <!-- <template v-slot:cell(actions)="props"> -->
+          <template slot="[actions]" slot-scope="props">
+          <div class="product-actions d-flex flex-row">
             <b-button variant="info" class="ui basic button"
               @click="onAction('view-item', props.item)">
               <i class="fa fa-search"></i>
             </b-button>
+
+
             <b-button variant="warning" class="ui basic button"
               @click="onAction('edit-item', props.item)">
               <i class="fa fa-edit"></i>
@@ -99,7 +102,10 @@ export default {
         {
           key: 'flavor',
           label: 'Sabor',
-          sortable: false
+          sortable: false,
+          formatter: value => {
+            return value == null ? '' : value.substring(0,11);
+          }
         },
         {
           key: 'size',
@@ -149,9 +155,12 @@ export default {
       switch (action) {
         case "view-item":
           console.log('slot) action: ' + action, data.id)
+          this.$router.push({path:'/dashboard/produtos/mostra-produto',query:{id:data.id}})
           break;
         case "edit-item":
           console.log('slot) action: ' + action, data.id)
+          this.$router.push({path:'/dashboard/produtos/updte-produto',query:{id:data.id}})
+
           break;
         case "delete-item":
           try {
@@ -167,6 +176,9 @@ export default {
             this.responseState.message = response.data.message
             console.log('deletado com sucesso' + response.data.productName.name)
             console.log(response.data.message)
+            this.responseState.isLoading = false
+            document.location.reload(true);
+
 
           } catch (e) {
             this.responseState.error = e
@@ -174,8 +186,8 @@ export default {
           }
           break;
       }
-      this.responseState.isLoading = false
-      document.location.reload(true);
+      // this.responseState.isLoading = false
+      // document.location.reload(true);
     }
   },
   mounted() {
@@ -187,11 +199,12 @@ export default {
   <style>
     .product-actions button.ui.button {
       /* padding: 8px 8px; */
-      width: 5em;
+      width: 3em;
       height: 3em;
+      margin-left: 6px;
     }
     .product-actions button.ui.button > i.icon {
-      /* margin: auto !important; */
+       margin: auto !important;
     }
 
     .input-text {

@@ -63,7 +63,7 @@ export default {
     },
     {
       name: 'Cadastrar Produtos',
-      url: 'dashboard/produtos/cadastrar-produtos',
+      url: '/dashboard/produtos/cadastrar-produtos',
       icon: 'icon-plus'
     },
     {

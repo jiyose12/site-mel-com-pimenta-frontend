@@ -5,6 +5,7 @@
     <div slot="header">
       <strong>Cadastro</strong> de Produtos
     </div>
+
     <b-form-group
       id="fieldset-1"
       label="Nome do Produto"
@@ -16,7 +17,7 @@
         Este campo é obrigatório e com no mínimo 3 letras.
       </b-form-invalid-feedback>
     </b-form-group>
-
+<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
     <b-row>
       <b-col>
         <b-form-group
@@ -340,6 +341,7 @@
         }
         else {
           this.$v.$touch()
+
         }
       },
       resetFields() {
