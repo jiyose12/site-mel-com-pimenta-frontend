@@ -16,7 +16,6 @@
         Este campo é obrigatório e com no mínimo 3 letras.
       </b-form-invalid-feedback>
     </b-form-group>
-<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
     <b-row>
       <b-col>
         <span class="oldItems">{{oldItems.category}}</span>
@@ -210,16 +209,20 @@
         responseImage: '',
         colors: [],
         file: null,
+        category: '',
+        subcategory: '',
         items: {
-          fileNameToStore: '',
+          image_product: '',
           color: '',
+          flavor: '',
+          size: '',
           name: '',
           amount: null,
           gross_price: null,
           discount: null,
           description: '',
-          subcategory: '',
-          category: ''
+          subcategory_id: '',
+          category_id: ''
         },
         categoryOptions: [
           { value: null, text: 'Selecione uma opção de Categoria' },
@@ -295,34 +298,30 @@
         this.responseState.isLoading = true
 
         /* File upload */
-        const fd = new FormData();
-        fd.append('image_product', this.file, this.file.name)
-        try {
-          const responseImage  = await this.$axios.post('/product/saveimage',
-            fd,
-            {
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            }
-          })
+        if(this.file !== null){
+          const fd = new FormData();
+          fd.append('image_product', this.file, this.file.name)
+          try {
+            const responseImage  = await this.$axios.post('/product/saveimage',
+              fd,
+              {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+            })
 
-          this.responseImage = responseImage.data.fileNameToStore
-        } catch (e) {
-          this.responseState = { error: e, errorText: 'Não foi possível enviar a imagem', isLoading: false }
-          console.log(e.response.data)
+            this.items.image_product = responseImage.data.fileNameToStore
+          } catch (e) {
+            this.responseState = { error: e, errorText: 'Não foi possível enviar a imagem', isLoading: false }
+          }
         }
-
         /* Tratamento de variaveis */
         for (const color of this.colors) {
           this.colorsSelected.push(color.text)
         }
-        this.fileNameToStore = this.responseImage,
-        this.color = this.colorsSelected.sort().join(),
-        this.size = this.sizeSelected.sort().join(),
-        this.flavor = this.flavorSelected.sort().join(),
-        this.category = this.categorySelected,
-        this.subcategory = this.subcategorySelected
-
+        this.items.color = this.colorsSelected.sort().join(),
+        this.items.size = this.sizeSelected.sort().join(),
+        this.items.flavor = this.flavorSelected.sort().join()
 
       let id = this.$route.query.id
       this.$axios.patch(`/product/`+id,this.items)
@@ -334,6 +333,17 @@
         .catch(e => {
           this.errors.push(e)
         })
+        //  try {
+        //     const { data } = await this.$axios.patch(`/product/`+id,
+        //     {
+        //         name: this.items.name,
+        //       })
+
+        //       this.responseState.message = data.message
+        //   } catch (e) {
+        //     this.responseState.error = e
+        //     this.responseState.isLoading = false
+        //   }
 
         this.responseState.isLoading = false
     },
