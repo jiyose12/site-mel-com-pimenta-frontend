@@ -159,7 +159,7 @@ export default {
           break;
         case "edit-item":
           console.log('slot) action: ' + action, data.id)
-          this.$router.push({path:'/dashboard/produtos/updte-produto',query:{id:data.id}})
+          this.$router.push({path:'/dashboard/produtos/editar-produto',query:{id:data.id}})
 
           break;
         case "delete-item":

@@ -284,7 +284,6 @@
       },
       onFileSelected(event) {
         this.file = event.target.files[0];
-        console.log(this.file)
       },
       async store () {
         if(!this.$v.$invalid){
@@ -328,7 +327,6 @@
                 category: this.categorySelected,
                 subcategory: this.subcategorySelected
               })
-              console.dir(data)
               this.responseState.message = data.message
           } catch (e) {
             this.responseState.error = e
