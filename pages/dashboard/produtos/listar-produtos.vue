@@ -57,6 +57,7 @@
 import { removeSpecialChar } from "../../../plugins/helpers";
 
 export default {
+  middleware: 'auth',
   computed: {
     items () {
 			return this.keyword

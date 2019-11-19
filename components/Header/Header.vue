@@ -8,10 +8,37 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <b-navbar-nav class="d-md-down-none">
-      <b-nav-item class="px-3">Dashboard</b-nav-item>
-      <b-nav-item class="px-3">Users</b-nav-item>
-      <b-nav-item class="px-3">Settings</b-nav-item>
+      <b-nav-item class="px-3">Ir para loja</b-nav-item>
     </b-navbar-nav>
+
+    <b-navbar-nav class="ml-auto">
+      <template v-if="authenticated">
+        <b>Logado como:</b>
+          <b-nav-item-dropdown class="px-4">
+              <template slot="button-content">
+                  {{user.name}}
+              </template>
+              <b-dropdown-item @click.prevent="signOut">Deslogar</b-dropdown-item>
+          </b-nav-item-dropdown>
+      </template>
+      <template v-else>
+        <div  class="px-4 d-flex">
+          <li class="nav-item">
+              <nuxt-link class="nav-link" to="/dashboard/login">Logar</nuxt-link>
+          </li>
+          <li class="nav-item">
+              <nuxt-link class="nav-link" to="/dashboard/login/registrar">Registrar</nuxt-link>
+          </li>
+        </div>
+      </template>
+    </b-navbar-nav>
+
+    <!-- <b-navbar-nav class="ml-auto">
+      <b>Logado como:</b>
+      <b-nav-item class="px-3">{{user.name}}</b-nav-item>
+      <b-nav-item class="px-3"> {{authenticated}}</b-nav-item>
+
+    </b-navbar-nav> -->
     <!-- <b-navbar-nav class="ml-auto">
       <b-nav-item class="d-md-down-none">
         <i class="icon-bell"></i>
@@ -40,6 +67,10 @@
       HeaderDropdown
     },
     methods: {
+      signOut() {
+        this.$auth.logout();
+        this.$router.push({name: 'dashboard/login'});
+      },
       sidebarToggle (e) {
         e.preventDefault()
         document.body.classList.toggle('sidebar-hidden')

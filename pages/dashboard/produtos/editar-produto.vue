@@ -192,6 +192,7 @@
 
   // import { required, minLength } from 'vuelidate/lib/validators'
   export default {
+    middleware: 'auth',
     computed: {
 
     },

@@ -211,6 +211,7 @@ import SocialBoxChartExample from '~/components/dashboard/SocialBoxChartExample'
 // import { Callout } from '~/components/'
 
 export default {
+  middleware: 'auth',
   name: 'dashboard',
   components: {
     // Callout,

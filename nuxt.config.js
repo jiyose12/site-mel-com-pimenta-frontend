@@ -30,7 +30,10 @@ module.exports = {
   ** Set the link active classes
   */
   router: {
-    linkActiveClass: 'active open'
+    linkActiveClass: 'active open',
+    middleware: [
+      'clearValidationErrors'
+    ]
   },
 
   /*
@@ -61,8 +64,33 @@ module.exports = {
   plugins: [
     '~/plugins/custom-components.js',
     '~/plugins/vuelidate.js',
+    '~/plugins/mixins/validation.js',
+    '~/plugins/mixins/user.js',
+    '~/plugins/axios.js',
     { src: '~/plugins/vue-tags-input', ssr: false }
   ],
+
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: { url: '/auth/login', method: 'post', propertyName: 'token' },
+          logout: { url: '/auth/logout', method: 'post' },
+          user: { url: '/me', method: 'get', propertyName: 'data' }
+        },
+        // tokenRequired: true,
+        // tokenType: 'bearer'
+      }
+    },
+    redirect: {
+      login: '/dashboard/login',
+      logout: '/dashboard',
+      home: '/'
+    },
+    plugins: [
+      '~/plugins/auth.js'
+    ],
+  },
 
   /*
   ** Nuxt.js modules
@@ -71,7 +99,8 @@ module.exports = {
     // Doc: https://github.com/nuxt-community/axios-module#usage
     '@nuxtjs/axios',
     // Doc: https://github.com/bootstrap-vue/bootstrap-vue
-    'bootstrap-vue/nuxt'
+    'bootstrap-vue/nuxt',
+    '@nuxtjs/auth'
   ],
   /*
   ** Axios module configuration

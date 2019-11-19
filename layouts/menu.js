@@ -25,7 +25,7 @@ export default {
     },
     {
       name: 'Cadastrar Administrador',
-      url: '/theme/colors',
+      url: '/dashboard/login/registrar',
       icon: 'fa fa-user-plus'
     },
     // {

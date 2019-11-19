@@ -1,10 +1,10 @@
 <template>
   <div >
       <h1>UPDATE</h1>
-   
+
        <router-link to="/dashboard/produtos/listar-produtos"><i class="fa fa-arrow-left">Volta</i></router-link>
-    
-    
+
+
       <h2>{{posts.name}}</h2>
       <hr>
       <form v-on:submit.prevent="submitPostEdit()">
@@ -17,15 +17,16 @@
           </div>
 
         </form>
-     
-    
+
+
   </div>
 </template>
 
 
- <script> 
- 
+ <script>
+
 export default {
+  middleware: 'auth',
   data() {
     return {
       posts: [],
@@ -34,7 +35,7 @@ export default {
       },
       errors: []
     }
-  }, 
+  },
    created () {
        let id = this.$route.query.id
     //   this.$axios.get(`/product/` +id + '/edit')
@@ -44,7 +45,7 @@ export default {
     //   .catch(e => {
     //     this.errors.push(e)
     //   })
-     
+
     this.$axios.get(`/product/`+id)
       .then(response => {
         this.posts = response.data
@@ -59,7 +60,7 @@ export default {
       this.$axios.patch(`/product/`+id,this.postBody)
         .then(response => {
           console.log(response)
-          
+
           this.postBody = response.data
         })
         .catch(e => {
