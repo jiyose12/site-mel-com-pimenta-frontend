@@ -1,6 +1,12 @@
 <template>
-<header class="header-section">
-	
+    
+<header>
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,300i,400,400i,700,700i" rel="stylesheet">
+	<!-- Page Preloder -->
+
+
+	<!-- Header section -->
+	<header class="header-section">
 		<div class="header-top">
 			<div class="container">
 				<div class="row">
@@ -12,7 +18,7 @@
 					</div>
 					<div class="col-xl-6 col-lg-5">
 						<form class="header-search-form">
-							<input type="text" placeholder="Procura produtos...">
+							<input type="text" placeholder="Search on divisima ....">
 							<button><i class="flaticon-search"></i></button>
 						</form>
 					</div>
@@ -20,14 +26,14 @@
 						<div class="user-panel">
 							<div class="up-item">
 								<i class="flaticon-profile"></i>
-								<a href="#">Entrar</a> In or <a href="#">Criar Conta</a>
+								<a href="#">Sign</a> In or <a href="#">Create Account</a>
 							</div>
 							<div class="up-item">
 								<div class="shopping-card">
 									<i class="flaticon-bag"></i>
 									<span>0</span>
 								</div>
-								<a href="#">Carrinho de Compras</a>
+								<a href="#">Shopping Cart</a>
 							</div>
 						</div>
 					</div>
@@ -38,85 +44,87 @@
 			<div class="container">
 				<!-- menu -->
 				<ul class="main-menu">
-					<li><a href="#">Home</a></li>
-					<li><a href="#">Homem</a></li>
-					<li><a href="#">Mulher</a></li>
-					<li><a href="#">Acessorios
-						<span class="new">Novo</span>
+					<li><a href="./">Home</a></li>
+					<li><a href="#">Women</a></li>
+					<li><a href="#">Men</a></li>
+					<li><a href="#">Jewelry
+						<span class="new">New</span>
 					</a></li>
-					<li><a href="#">SexShop</a>
+					<li><a href="#">Shoes</a>
 						<ul class="sub-menu">
-							<li><a href="#">Vibradores</a></li>
-							<li><a href="#">Camisinhas</a></li>
-							<li><a href="#">Lingeries</a></li>
-							<li><a href="#">Gel</a></li>
-							<li><a href="#">Tonalizantes</a></li>
+							<li><a href="#">Sneakers</a></li>
+							<li><a href="#">Sandals</a></li>
+							<li><a href="#">Formal Shoes</a></li>
+							<li><a href="#">Boots</a></li>
+							<li><a href="#">Flip Flops</a></li>
 						</ul>
 					</li>
-					<li><a href="#">Paginas</a>
+					<li><a href="#">Pages</a>
 						<ul class="sub-menu">
-							<li><a href="./product.html">Produtos</a></li>
-							<li><a href="./category.html">Categoria</a></li>
-							<li><a href="./cart.html">Carrinho</a></li>
-							<li><a href="./checkout.html">Checkout</a></li>
-							<li><a href="./contatos">Contato</a></li>
+							<li><a href="./product.html">Product Page</a></li>
+							<li><a href="./category.html">Category Page</a></li>
+							<li><a href="./cart.html">Cart Page</a></li>
+							<li><a href="./checkout.html">Checkout Page</a></li>
+							<li><a href="./contact.html">Contact Page</a></li>
 						</ul>
 					</li>
 					<li><a href="#">Blog</a></li>
 				</ul>
 			</div>
 		</nav>
+	</header>
+	<!-- Header section end -->
 
 
-<section class="product-filter-section">
+	<!-- Page info -->
+	<div class="page-top-info">
 		<div class="container">
-			<div class="section-title">
-				<h2>PRODUTOS MAIS VENDIDOS</h2>
-			</div>
-			<ul class="product-filter-menu">
-				<li><a href="#">CALCINHAS</a></li>
-				<li><a href="#">TOPS</a></li>
-				<li><a href="#">LINGERIE</a></li>
-				<li><a href="#">SUTIÃ</a></li>
-				<li><a href="#">ROUPAS</a></li>
-				<li><a href="#">ACESSORIOS</a></li>
-				<li><a href="#">FANTASIAS</a></li>
-			</ul>
-			
-			
-			<div class="row">
-				<div v-for="i in productData" :key="i">
-				<div class="col-lg-4 col-sm-6">
-					
-					<div class="product-item">
-						
-						<div class="pi-pic">
-							<img :src="'http://localhost:8000/storage/image_product/' + i.image_product" :alt="`${i.image_product}`">
-							<div class="pi-links">	
-							<a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-							
-							</div>
-						</div>	
-						<div class="pi-text">
-							<p>{{i.name}}</p>
-							<p>{{i.gross_price}}</p>
-						</div>
-					</div>
-				</div>
-			</div>
-			</div>
-			<div class="text-center pt-5">
-				<button class="site-btn sb-line sb-dark">LOAD MORE</button>
+			<h4>Contact</h4>
+			<div class="site-pagination">
+				<a href="">Home</a> /
+				<a href="">Contact</a>
 			</div>
 		</div>
+	</div>
+	<!-- Page info end -->
+
+
+	<!-- Contact section -->
+	<section class="contact-section">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6 contact-info">
+					<h3>Nosso Endereço</h3>
+					<p>Av. João Pessoa, 549, Box 04, na entrada da Rua Cubati, Tibiri</p>
+					<p> (83) 98762-9549</p>
+					<p>hosting@contact.com</p>
+					<div class="contact-social">
+						<a href="#"><i class="fa fa-pinterest"></i></a>
+						<a href="#"><i class="fa fa-facebook"></i></a>
+						<a href="#"><i class="fa fa-twitter"></i></a>
+						<a href="#"><i class="fa fa-dribbble"></i></a>
+						<a href="#"><i class="fa fa-behance"></i></a>
+					</div>
+					<form class="contact-form">
+						<input type="text" placeholder="Your name">
+						<input type="text" placeholder="Your e-mail">
+						<input type="text" placeholder="Subject">
+						<textarea placeholder="Message"></textarea>
+						<button class="site-btn">SEND NOW</button>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="map"><iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d14376.077865872314!2d-73.879277264103!3d40.757667781624285!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sbd!4v1546528920522" style="border:0" allowfullscreen></iframe></div>
 	</section>
+	<!-- Contact section end -->
 
 
+	
 
 
-
-
-<section class="footer-section">
+	<!-- Footer section -->
+	<section class="footer-section">
 		<div class="container">
 			<div class="footer-logo text-center">
 				<a href="index.html"><img src="" alt=""></a>
@@ -124,25 +132,28 @@
 			<div class="row">
 				<div class="col-lg-3 col-sm-6">
 					<div class="footer-widget about-widget">
-						<h2>Sobre</h2>
-						<p>Loja Mel Com Pimenta nasceu da iniciativa de Keilla Teixeira em Santa Rita, onde começou a comercializar seus produtos na sua propria casa, mas o negocio se expandiu e foi necessario o desenvolvimento de uma loja virtual.</p>
+						<h2>About</h2>
+						<p>Donec vitae purus nunc. Morbi faucibus erat sit amet congue mattis. Nullam frin-gilla faucibus urna, id dapibus erat iaculis ut. Integer ac sem.</p>
 						<img src="img/cards.png" alt="">
 					</div>
 				</div>
 				<div class="col-lg-3 col-sm-6">
 					<div class="footer-widget about-widget">
-						<h2>Questões</h2>
+						<h2>Questions</h2>
 						<ul>
-							<li><a href="">Sobre</a></li>
-							<li><a href="">Trabalhos</a></li>
-							<li><a href="">Vendas</a></li>
+							<li><a href="">About Us</a></li>
+							<li><a href="">Track Orders</a></li>
+							<li><a href="">Returns</a></li>
+							<li><a href="">Jobs</a></li>
+							<li><a href="">Shipping</a></li>
 							<li><a href="">Blog</a></li>
 						</ul>
 						<ul>
-							<li><a href="">Acionistas</a></li>
+							<li><a href="">Partners</a></li>
 							<li><a href="">Bloggers</a></li>
-							<li><a href="">Suporte</a></li>
-							<li><a href="">Termos de Uso</a></li>
+							<li><a href="">Support</a></li>
+							<li><a href="">Terms of Use</a></li>
+							<li><a href="">Press</a></li>
 						</ul>
 					</div>
 				</div>
@@ -153,17 +164,17 @@
 							<div class="lp-item">
 								<div class="lp-thumb set-bg" data-setbg="img/blog-thumbs/1.jpg"></div>
 								<div class="lp-content">
-									<h6>Tendencias de 2020</h6>
-									<span>Outubro 25, 2019</span>
-									<a href="#" class="readmore">Leia Sobre</a>
+									<h6>what shoes to wear</h6>
+									<span>Oct 21, 2018</span>
+									<a href="#" class="readmore">Read More</a>
 								</div>
 							</div>
 							<div class="lp-item">
 								<div class="lp-thumb set-bg" data-setbg="img/blog-thumbs/2.jpg"></div>
 								<div class="lp-content">
-									<h6>Tendencias desse ano</h6>
-									<span>Outubro 21, 2019</span>
-									<a href="#" class="readmore">Leia Sobre</a>
+									<h6>trends this year</h6>
+									<span>Oct 21, 2018</span>
+									<a href="#" class="readmore">Read More</a>
 								</div>
 							</div>
 						</div>
@@ -171,22 +182,22 @@
 				</div>
 				<div class="col-lg-3 col-sm-6">
 					<div class="footer-widget contact-widget">
-						<h2>Localização</h2>
+						<h2>Questions</h2>
 						<div class="con-info">
 							<span>C.</span>
-							<p>Mel Com Pimenta Ltda </p>
+							<p>Your Company Ltd </p>
 						</div>
 						<div class="con-info">
 							<span>B.</span>
-							<p>Santa Rita - PB </p>
+							<p>1481 Creekside Lane  Avila Beach, CA 93424, P.O. BOX 68 </p>
 						</div>
 						<div class="con-info">
 							<span>T.</span>
-							<p>+55 (83) 9 4002 8922</p>
+							<p>+53 345 7953 32453</p>
 						</div>
 						<div class="con-info">
 							<span>E.</span>
-							<p>melcompimenta@gmail.com</p>
+							<p>office@youremail.com</p>
 						</div>
 					</div>
 				</div>
@@ -211,102 +222,17 @@
 			</div>
 		</div>
 	</section>
-
-	</header>
+</header>
 
 </template>
 
 <script>
 export default {
-  layout: 'clean',
- // middleware: 'auth',
-  computed: {
-    items () {
-			return this.keyword
-        ? this.productData.filter(item => {
-
-          let newItem = removeSpecialChar(item.name.toLowerCase())
-          let newKeyword = removeSpecialChar(this.keyword.toLowerCase())
-
-          if(newItem.indexOf(newKeyword) !== -1){
-            return item.name
-          }
-          else
-            return item.gross_price.includes(this.keyword)
-        }
-        )
-				: this.productData
-    },
-    fields() {
-      return [
-        {
-          key: 'name',
-          label: 'Nome',
-          sortable: true
-        },
-        {
-          key: 'gross_price',
-          label: 'Preço Bruto',
-          sortable: true
-        }
-      ]
-    }
-  },
-  data() {
-    return {
-      responseState: {
-        message: '',
-        error: '',
-        isLoading: false,
-        posts: [],
-        errors: []
-      },
-      productData: null,
-      keyword: ''
-    }
-  },
-     created () {
-       let id = this.$route.query.id;
-    this.$axios.get(`/product/`+id)
-      .then(response => {
-        this.posts = response.data
-      })
-      .catch(e => {
-        this.errors.push(e)
-      })
-  },
-  methods: {
-    async index () {
-      try {
-        const { data } = await this.$axios.get('/product')
-        //color.substring(0,8)
-
-        this.productData = data
-        console.dir(this.productData)
-      } catch (e) {
-        this.error = e.response.data
-      }
-    },
-  },
-  mounted() {
-    this.index();
-  }
+    layout: 'clean',
 }
 </script>
 
 <style>
-/* =================================
-------------------------------------
-  Divisima | eCommerce Template
-  Version: 1.0
- ------------------------------------
- ====================================*/
-
-
-/*----------------------------------------*/
-/* Template default CSS
-/*----------------------------------------*/
-
 html,
 body {
 	height: 100%;
@@ -2710,5 +2636,4 @@ ol {
 		display: none;
 	}
 }
-
 </style>
