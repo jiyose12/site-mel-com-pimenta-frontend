@@ -1,6 +1,6 @@
 <template>
 <header class="header-section">
-	
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		<div class="header-top">
 			<div class="container">
 				<div class="row">
@@ -82,21 +82,21 @@
 				<li><a href="#">ACESSORIOS</a></li>
 				<li><a href="#">FANTASIAS</a></li>
 			</ul>
-			
-			
+
+
 			<div class="row">
 				<div v-for="i in productData" :key="i">
 				<div class="col-lg-4 col-sm-6">
-					
+
 					<div class="product-item">
-						
+
 						<div class="pi-pic">
 							<img :src="'http://localhost:8000/storage/image_product/' + i.image_product" :alt="`${i.image_product}`">
-							<div class="pi-links">	
-							<a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-							
+							<div class="pi-links">
+							<a href="#" class="add-card"><i class="flaticon-bag fa fa-shopping-cart"></i><span>ADD TO CART</span></a>
+
 							</div>
-						</div>	
+						</div>
 						<div class="pi-text">
 							<p>{{i.name}}</p>
 							<p>{{i.gross_price}}</p>
@@ -125,7 +125,7 @@
 				<div class="col-lg-3 col-sm-6">
 					<div class="footer-widget about-widget">
 						<h2>Sobre</h2>
-						<p>Loja Mel Com Pimenta nasceu da iniciativa de Keilla Teixeira em Santa Rita, onde começou a comercializar seus produtos na sua propria casa, mas o negocio se expandiu e foi necessario o desenvolvimento de uma loja virtual.</p>
+						<p>Loja Mel Com Pimenta nasceu da iniciativa de Keila Teixeira em Santa Rita, onde começou a comercializar seus produtos na sua propria casa, mas o negocio se expandiu e foi necessario o desenvolvimento de uma loja virtual.</p>
 						<img src="img/cards.png" alt="">
 					</div>
 				</div>
@@ -204,7 +204,7 @@
 					<a href="" class="tumblr"><i class="fa fa-tumblr-square"></i><span>tumblr</span></a>
 				</div>
 
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --> 
+<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 <p class="text-white text-center mt-5">Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a></p>
 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 
@@ -1109,6 +1109,10 @@ ol {
 	position: relative;
 	display: block;
 }
+.product-item .pi-pic img {
+	width: 300px;
+  height: 175px;
+}
 
 .product-item .tag-new,
 .product-item .tag-sale {
@@ -1198,7 +1202,7 @@ ol {
 
 .product-item .pi-text {
 	padding-top: 22px;
-	height: 87px;
+	height: 112px;
 }
 
 .product-item .pi-text h6 {
